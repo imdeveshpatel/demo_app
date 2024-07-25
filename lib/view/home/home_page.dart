@@ -1,9 +1,7 @@
 import 'package:demo_app/core/constants/color_constant.dart';
 import 'package:demo_app/core/constants/image_constant.dart';
 import 'package:demo_app/core/routing/routes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -1,4 +1,6 @@
 import 'package:demo_app/core/constants/color_constant.dart';
+import 'package:demo_app/core/model/employee_model.dart';
+import 'package:demo_app/core/routing/routes.dart';
 import 'package:demo_app/view/base/base_view.dart';
 import 'package:demo_app/view/custom/custom_app_bar.dart';
 import 'package:demo_app/view/custom/custom_button.dart';
@@ -7,7 +9,8 @@ import 'package:demo_app/view_model/employee/employee_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class EditEmployee extends StatefulWidget {
-  const EditEmployee({super.key});
+  final Employee employee;
+  const EditEmployee({super.key, required this.employee});
 
   @override
   State<EditEmployee> createState() => _EditEmployeeState();
@@ -21,7 +24,7 @@ class _EditEmployeeState extends State<EditEmployee> {
   TextEditingController dojCon = TextEditingController();
   TextEditingController salaryCon = TextEditingController();
   TextEditingController remarkCon = TextEditingController();
-  TextEditingController empCodeCon = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -29,6 +32,14 @@ class _EditEmployeeState extends State<EditEmployee> {
     return BaseView<EmployeeViewModel>(onModelReady: (model) {
       Future.delayed(Duration.zero, () async {});
     }, builder: (context, model, child) {
+      nameCon.text = widget.employee.name;
+      addCon.text = widget.employee.address;
+      mobCon.text = widget.employee.mobile;
+      dobCon.text = widget.employee.dob;
+      dojCon.text = widget.employee.doj;
+      salaryCon.text = widget.employee.salary;
+      remarkCon.text = widget.employee.remark;
+
       return SafeArea(
         child: Scaffold(
           appBar: CustomAppBar().getAppBar(
@@ -50,51 +61,57 @@ class _EditEmployeeState extends State<EditEmployee> {
                     const TitleText(
                       title: "Employee Code",
                     ),
-                    CustomEditText(
-                      controller: nameCon,
-                      hint: "1",
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        widget.employee.code!,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: AppColors().black.withOpacity(.5),
+                            fontWeight: FontWeight.w800),
+                      ),
                     ),
                     const TitleText(
                       title: "Employee Name",
                     ),
                     CustomEditText(
                       controller: nameCon,
-                      hint: "Employee Name",
+                      hint: widget.employee.name,
                     ),
                     const TitleText(
                       title: "Mobile Number",
                     ),
                     CustomEditText(
                       controller: mobCon,
-                      hint: "Mobile Number",
+                      hint: widget.employee.mobile,
                     ),
                     const TitleText(
                       title: "Date Of Birth",
                     ),
                     CustomEditText(
                       controller: dobCon,
-                      hint: "01/01/2000",
+                      hint: widget.employee.dob,
                     ),
                     const TitleText(
                       title: "Date Of Joining",
                     ),
                     CustomEditText(
                       controller: dojCon,
-                      hint: "01/01/2000",
+                      hint: widget.employee.doj,
                     ),
                     const TitleText(
                       title: "Employee Salary",
                     ),
                     CustomEditText(
                       controller: salaryCon,
-                      hint: "20000",
+                      hint: widget.employee.salary,
                     ),
                     const TitleText(
                       title: "Employee Address",
                     ),
                     CustomEditText(
                       controller: addCon,
-                      hint: "Address",
+                      hint: widget.employee.address,
                     ),
                     const TitleText(
                       title: "Remark",
@@ -102,22 +119,44 @@ class _EditEmployeeState extends State<EditEmployee> {
                     CustomEditText(
                       maxLines: 3,
                       controller: remarkCon,
-                      hint: "Remark",
+                      hint: widget.employee.remark,
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CustomButton(
-                        title: "Save",
-                        buttonColor: AppColors().darkBlue,
-                        onPressed: () {},
-                      ),
+                          title: "Save",
+                          buttonColor: AppColors().darkBlue,
+                          onPressed: () {
+                            model.empUpdate(
+                              employee: Employee(
+                                name: nameCon.text,
+                                address: addCon.text,
+                                mobile: mobCon.text,
+                                salary: salaryCon.text,
+                                remark: remarkCon.text,
+                                dob: dobCon.text,
+                                doj: dojCon.text,
+                              ),
+                              empId: widget.employee.docId!,
+                            );
+
+                            Future.delayed(
+                              const Duration(seconds: 1),
+                              () {
+                                Navigator.pushReplacementNamed(
+                                    context, Routes.allEmployeePageRoute);
+                              },
+                            );
+                          }),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CustomButton(
                         title: "Close",
                         buttonColor: AppColors().redBorder,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                       ),
                     )
                   ],

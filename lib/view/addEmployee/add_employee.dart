@@ -1,4 +1,5 @@
 import 'package:demo_app/core/constants/color_constant.dart';
+import 'package:demo_app/core/model/employee_model.dart';
 import 'package:demo_app/core/routing/routes.dart';
 import 'package:demo_app/view/base/base_view.dart';
 import 'package:demo_app/view/custom/custom_app_bar.dart';
@@ -16,14 +17,14 @@ class AddEmployeePage extends StatefulWidget {
 }
 
 class _AddEmployeePageState extends State<AddEmployeePage> {
-  // TextEditingController nameCon = TextEditingController();
-  // TextEditingController addCon = TextEditingController();
-  // TextEditingController mobCon = TextEditingController();
-  // TextEditingController dobCon = TextEditingController();
-  // TextEditingController dojCon = TextEditingController();
-  // TextEditingController salaryCon = TextEditingController();
-  // TextEditingController remarkCon = TextEditingController();
-  // TextEditingController empCodeCon = TextEditingController();
+  TextEditingController nameCon = TextEditingController();
+  TextEditingController addCon = TextEditingController();
+  TextEditingController mobCon = TextEditingController();
+  TextEditingController dobCon = TextEditingController();
+  TextEditingController dojCon = TextEditingController();
+  TextEditingController salaryCon = TextEditingController();
+  TextEditingController remarkCon = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -53,50 +54,51 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                       title: "Employee Name",
                     ),
                     CustomEditText(
-                      controller: model.nameCon,
+                      controller: nameCon,
                       hint: "Employee Name",
                     ),
                     const TitleText(
                       title: "Mobile Number",
                     ),
                     CustomEditText(
-                      controller: model.mobCon,
+                      controller: mobCon,
                       hint: "Mobile Number",
                     ),
                     const TitleText(
                       title: "Date Of Birth",
                     ),
                     CustomEditText(
-                      controller: model.dobCon,
-                      hint: "01/01/2000",
+                      controller: dobCon,
+                      hint: "Date Of Birth",
                     ),
                     const TitleText(
                       title: "Date Of Joining",
                     ),
                     CustomEditText(
-                      controller: model.dojCon,
-                      hint: "01/01/2000",
+                      controller: dojCon,
+                      hint: "Date of joining",
                     ),
                     const TitleText(
                       title: "Employee Salary",
                     ),
                     CustomEditText(
-                      controller: model.salaryCon,
-                      hint: "20000",
+                      controller: salaryCon,
+                      hint: "Salary",
                     ),
                     const TitleText(
                       title: "Employee Address",
                     ),
                     CustomEditText(
-                      controller: model.addCon,
+                      controller: addCon,
                       hint: "Address",
                     ),
                     const TitleText(
                       title: "Remark",
                     ),
                     CustomEditText(
+                      // isMandatory: false,
                       maxLines: 3,
-                      controller: model.remarkCon,
+                      controller: remarkCon,
                       hint: "Remark",
                     ),
                     Padding(
@@ -105,11 +107,23 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                         title: "Save",
                         buttonColor: AppColors().darkBlue,
                         onPressed: () {
-                          model.empCreate();
-                          Future.delayed(const Duration(seconds: 1), () {
-                            Navigator.pushReplacementNamed(
-                                context, Routes.homePageRoute);
-                          });
+                          if (_formKey.currentState!.validate()) {
+                            model.empCreate(
+                              employee: Employee(
+                                address: addCon.text,
+                                name: nameCon.text,
+                                dob: dobCon.text,
+                                doj: dojCon.text,
+                                mobile: mobCon.text,
+                                remark: remarkCon.text,
+                                salary: salaryCon.text,
+                              ),
+                            );
+                            Future.delayed(const Duration(seconds: 1), () {
+                              Navigator.pushReplacementNamed(
+                                  context, Routes.homePageRoute);
+                            });
+                          }
                         },
                       ),
                     ),

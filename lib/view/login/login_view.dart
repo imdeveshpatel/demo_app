@@ -67,14 +67,14 @@ class _LoginPageState extends State<LoginPage> {
                   child: CustomButton(
                     title: "Login",
                     buttonColor: AppColors().redBorder,
-                    onPressed: () {
-                      model.signin();
-
-                      // if (model.formKey.currentState!.validate()) {
-                      //   model.signin();
-                      Navigator.pushReplacementNamed(
-                          context, Routes.homePageRoute);
-                      // }
+                    onPressed: () async {
+                      if (model.formKey.currentState!.validate()) {
+                        bool result = await model.signin(context: context);
+                        if (result) {
+                          Navigator.pushReplacementNamed(
+                              context, Routes.homePageRoute);
+                        }
+                      }
                     },
                   ),
                 )

@@ -110,9 +110,9 @@ class _CustomEditTextState extends State<CustomEditText> {
             labelText: widget.showLabel ? widget.hint : null,
             isDense: true,
             hintStyle: TextStyle(
-                color: AppColors().darkBlue.withOpacity(0.5),
+                color: AppColors().darkBlue.withOpacity(0.8),
                 fontWeight: FontWeight.w600,
-                fontSize: 12),
+                fontSize: 14),
             labelStyle: TextStyle(
                 color: AppColors().darkBlue.withOpacity(0.5),
                 fontWeight: FontWeight.w500,

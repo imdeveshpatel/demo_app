@@ -6,12 +6,16 @@ class BaseViewModel with ChangeNotifier {
 
   ViewState get state => _state;
 
-  void setState(ViewState viewState) {
+  set state(ViewState viewState) {
     _state = viewState;
     notifyListeners();
   }
 
-  void update() {
+  set stateWithoutUpdate(ViewState viewState) {
+    _state = viewState;
+  }
+
+  void updateUI() {
     notifyListeners();
   }
 }

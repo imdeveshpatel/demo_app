@@ -1,4 +1,5 @@
 import 'package:demo_app/core/constants/color_constant.dart';
+import 'package:demo_app/core/model/employee_model.dart';
 import 'package:demo_app/core/routing/routes.dart';
 import 'package:demo_app/view/base/base_view.dart';
 import 'package:demo_app/view/custom/custom_app_bar.dart';
@@ -7,7 +8,8 @@ import 'package:demo_app/view_model/employee/employee_viewmodel.dart';
 import 'package:flutter/material.dart';
 
 class EmployeeDetails extends StatefulWidget {
-  const EmployeeDetails({super.key});
+  final Employee employee;
+  const EmployeeDetails({super.key, required this.employee});
 
   @override
   State<EmployeeDetails> createState() => _EmployeeDetailsState();
@@ -36,17 +38,19 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   title("Employee Code"),
-                  subTitle("Devesh "),
+                  subTitle(widget.employee.code!),
                   title("Employee Name"),
-                  subTitle("Devesh "),
+                  subTitle(widget.employee.name),
                   title("Employee Address"),
-                  subTitle("Devesh "),
-                  title("Employee DOB"),
-                  subTitle("Devesh "),
+                  subTitle(widget.employee.address),
+                  title("Date of birth"),
+                  subTitle(widget.employee.dob),
                   title("Employee Salary"),
-                  subTitle("Devesh "),
+                  subTitle(widget.employee.salary),
+                  title("Date of joining"),
+                  subTitle(widget.employee.doj),
                   title("Remark"),
-                  subTitle("Devesh "),
+                  subTitle(widget.employee.remark),
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 50, left: 30, right: 30, bottom: 30),
@@ -55,7 +59,8 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                       buttonColor: AppColors().darkBlue,
                       onPressed: () {
                         Navigator.pushNamed(
-                            context, Routes.editEmployeePageRoute);
+                            context, Routes.editEmployeePageRoute,
+                            arguments: widget.employee);
                       },
                     ),
                   ),
@@ -64,9 +69,58 @@ class _EmployeeDetailsState extends State<EmployeeDetails> {
                     child: CustomButton(
                       title: "Delete",
                       buttonColor: AppColors().redBorder,
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(
+                                'Delete',
+                              ),
+                              content: const Text(
+                                  'you want to delete this employee ?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text(
+                                    'Confirm',
+                                    style: TextStyle(
+                                        color: AppColors().errorColor),
+                                  ),
+                                  onPressed: () {
+                                    model.empDelete(
+                                        empId: widget.employee.docId!);
+                                    Future.delayed(
+                                      const Duration(seconds: 1),
+                                      () {
+                                        Navigator.pushReplacementNamed(context,
+                                            Routes.allEmployeePageRoute);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                     ),
                   )
+                  //  Padding(
+                  //   padding: const EdgeInsets.all(30.0),
+                  //   child: CustomButton(
+                  //     title: "Delete",
+                  //     buttonColor: AppColors().redBorder,
+                  //     onPressed: () {
+                  //       model.empDelete(empId: widget.employee.docId!);
+                  //     },
+                  //   ),
+                  // )
                 ],
               ),
             ),
